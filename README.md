@@ -39,5 +39,5 @@ If app is running successfully, you'll see following message
 
 ## Author
 
-Shivam Shekhar
+Shivam Shekhar  
 shivamshekhar299@gmail.com
