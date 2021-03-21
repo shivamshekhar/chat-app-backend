@@ -2,64 +2,50 @@
 
 const uuid = require('uuid');
 const crypto = require('crypto');
-const { userFriendsMap, userNamePasswordMap, userNameTokenMap, userSessionMap, userTokenNameMap } = require('../../config').user;
+const cryptUtils = require('../../lib').cryptUtils;
+const { userSessionMap, userMap } = require('../../config').user;
 
 class User {
   static create(userName, password) {
-    userNameTokenMap[userName] = uuid.v4();
-
-    userTokenNameMap[userNameTokenMap[userName]] = userName;
-
-    const hash = crypto.createHash("sha256");
-
-    hash.update(password);
-
-    userNamePasswordMap[userName] = hash.digest("hex");
-
-    return userNameTokenMap[userName];
+    const decryptedUserName = cryptUtils.decryptUserName(userName);
+    userMap[decryptedUserName] = {
+      name : decryptedUserName,
+      password : password
+    };
+    return decryptedUserName;
   }
 
   static isPasswordValid(userName, password) {
-    const hash = crypto.createHash("sha256");
-
-    hash.update(password);
-
-    const passHash = hash.digest("hex");
-
-    return (passHash === userNamePasswordMap[userName]);
+    const decryptedUserName = cryptUtils.decryptUserName(userName);
+    const userDetails = userMap[decryptedUserName] || {};
+    return (password === userDetails.password);
   }
 
-  static isUserLoggedIn(userName, userToken) {
-    if(!userToken) {
-      userToken = userNameTokenMap[userName];
-    }
-    
-    return (userSessionMap[userToken] !== null && userSessionMap[userToken] !== undefined);
+  static isUserLoggedIn(userName) {
+    const decryptedUserName = cryptUtils.decryptUserName(userName);
+    return (userSessionMap[decryptedUserName] !== null && userSessionMap[decryptedUserName] !== undefined);
   }
 
   static generateSessionToken(userName) {
+    const decryptedUserName = cryptUtils.decryptUserName(userName);
     const sessionToken = uuid.v4();
-    const userToken = userNameTokenMap[userName];
-    userSessionMap[userToken] = sessionToken;
+    userSessionMap[decryptedUserName] = sessionToken;
     return sessionToken;
   }
 
   static isValidSession(userName, sessionToken) {
-    const userToken = userNameTokenMap[userName];
-    return (sessionToken === userSessionMap[userToken]);
+    const decryptedUserName = cryptUtils.decryptUserName(userName);
+    return (sessionToken === userSessionMap[decryptedUserName]);
   }
 
   static clearSessionToken(userName) {
-    const userToken = userNameTokenMap[userName];
-    userSessionMap[userToken] = undefined;
+    const decryptedUserName = cryptUtils.decryptUserName(userName);
+    userSessionMap[decryptedUserName] = undefined;
   }
 
-  static checkUserExists(userName, userToken) {
-    if(!userName) {
-      userName = userTokenNameMap[userToken];
-    }
-
-    return (userNameTokenMap[userName] !== null && userNameTokenMap[userName] !== undefined)
+  static checkUserExists(userName) {
+    const decryptedUserName = cryptUtils.decryptUserName(userName);
+    return (userMap[decryptedUserName] !== null && userMap[decryptedUserName] !== undefined);
   }
 }
 

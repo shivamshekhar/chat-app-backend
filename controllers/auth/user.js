@@ -14,7 +14,7 @@ class User {
     }
 
     if (UserService.checkUserExists(userName)) {
-      let err = new Error(`User name : ${userName} already exists`);
+      let err = new Error(`User already exists`);
       err.status = 400;
       return next(err);
     }
@@ -25,23 +25,15 @@ class User {
   static create(req, res, next) {
     const userName = req && req.body && req.body.name;
     const password = req && req.body && req.body.password;
-    const token = UserService.create(userName, password);
+    const decryptedUserName = UserService.create(userName, password);
 
     return res.status(200).json({
-      message: `Successfully created user : ${userName}`,
-      token,
+      message: `Successfully created user : ${decryptedUserName}`,
     });
   }
 
   static login(req, res, next) {
     const userName = req && req.body && req.body.name;
-
-    if (UserService.isUserLoggedIn(userName)) {
-      return res.status(302).json({
-        message: "User is already logged in.",
-      });
-    }
-
     const password = req && req.body && req.body.password;
 
     if (!userName || !password) {
@@ -49,16 +41,23 @@ class User {
       err.status = 400;
       return next(err);
     }
+    
+    if (UserService.isUserLoggedIn(userName)) {
+      return res.status(200).json({
+        message: "User is already logged in.",
+        sessionToken: UserService.generateSessionToken(userName)
+      });
+    }
 
     if (!UserService.checkUserExists(userName)) {
-      let err = new Error(`User name : ${userName} does not exist`);
+      let err = new Error(`User does not exist`);
       err.status = 400;
       return next(err);
     }
 
     if (UserService.isPasswordValid(userName, password)) {
       return res.status(200).json({
-        message: `Successfully logged in user : ${userName}`,
+        message: `Successfully logged in`,
         sessionToken: UserService.generateSessionToken(userName),
       });
     } else {
@@ -87,6 +86,18 @@ class User {
     return res.status(200).json({
       message: "Successfully logged out",
     });
+  }
+
+  static checkUserExists(req, res, next) {
+    const userName = req && req.params && req.params.user_name;
+
+    if(UserService.checkUserExists(userName)) {
+      return res.status(201).end();
+    } else {
+      let err = new Error('User does not exist');
+      err.status = 400;
+      return next(err);
+    }
   }
 }
 

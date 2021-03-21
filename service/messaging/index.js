@@ -1,22 +1,25 @@
-const { userTokenMessagingQueueMap } = require("../../config").message;
-const { userTokenNameMap } = require('../../config').user;
+const { userMessagingQueueMap } = require("../../config").message;
+const cryptUtils = require('../../lib').cryptUtils;
 
 class Messaging {
-    static send(message, friendToken, userToken) {
-        userTokenMessagingQueueMap[friendToken] = userTokenMessagingQueueMap[friendToken] || [];
-        userTokenMessagingQueueMap[friendToken].push({
+    static send(message, friendName, userName) {
+        const decryptedUserName = cryptUtils.decryptUserName(userName);
+        const decryptedFriendName = cryptUtils.decryptUserName(friendName);
+        userMessagingQueueMap[decryptedFriendName] = userMessagingQueueMap[decryptedFriendName] || [];
+        userMessagingQueueMap[decryptedFriendName].push({
             message,
-            sentFrom : userTokenNameMap[userToken]
+            sentFrom : decryptedUserName
         });
     }
 
-    static poll(userToken) {
-        userTokenMessagingQueueMap[userToken] = userTokenMessagingQueueMap[userToken] || [];
+    static poll(userName) {
+        const decryptedUserName = cryptUtils.decryptUserName(userName);
+        userMessagingQueueMap[decryptedUserName] = userMessagingQueueMap[decryptedUserName] || [];
         
         let messages = [];
 
-        while(userTokenMessagingQueueMap[userToken].length) {
-            let m = userTokenMessagingQueueMap[userToken].shift();
+        while(userMessagingQueueMap[decryptedUserName].length) {
+            let m = userMessagingQueueMap[decryptedUserName].shift();
             messages.push(m);
         }
 
