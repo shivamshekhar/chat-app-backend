@@ -7,5 +7,5 @@ const messagingController = require('../../controllers').messaging;
 module.exports = function (app) {
   app.post("/messaging/send", messagingController.send, errorController.error);
 
-  app.get("/messaging/:user_token/poll", messagingController.poll, errorController.error);
+  app.get("/messaging/:user_name/poll", messagingController.poll, errorController.error);
 };
