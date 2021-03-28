@@ -2,6 +2,7 @@
 
 const UserService = require("../../service").auth.user;
 const MessagingService = require('../../service').messaging;
+const logger = require('../../lib').logger;
 
 class Messaging {
   static send(req, res, next) {
@@ -34,7 +35,7 @@ class Messaging {
     }
   }
 
-  static poll(req, res, next) {
+  static async poll(req, res, next) {
     const userName = req && req.params && req.params.user_name;
     const sessionToken = req && req.headers && req.headers.session_token;
 
@@ -49,7 +50,12 @@ class Messaging {
         err.status = 401;
         return next(err);
     } else {
-        const messages = MessagingService.poll(userName);
+        req.once('close', () => {
+          logger.log('Connection closed by client. Clearing all messaging listeners');
+          MessagingService.clearListeners(userName);
+        });
+
+        const messages = await MessagingService.poll(userName);
         return res.status(200).json(messages);
     }
   }

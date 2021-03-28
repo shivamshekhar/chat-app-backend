@@ -4,6 +4,8 @@ const uuid = require('uuid');
 const crypto = require('crypto');
 const cryptUtils = require('../../lib').cryptUtils;
 const { userSessionMap, userMap } = require('../../config').user;
+const { userMessagingEmitterMap } = require('../../config').message;
+const EventEmitter = require('events');
 
 class User {
   static create(userName, password) {
@@ -12,6 +14,7 @@ class User {
       name : decryptedUserName,
       password : password
     };
+    userMessagingEmitterMap[decryptedUserName] = new EventEmitter();
     return decryptedUserName;
   }
 
