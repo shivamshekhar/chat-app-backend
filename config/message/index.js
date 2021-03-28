@@ -1,7 +1,9 @@
 "use strict";
 
 const userMessagingQueueMap = {};
+const userMessagingEmitterMap = {};
 
 module.exports = {
-    userMessagingQueueMap
+    userMessagingQueueMap,
+    userMessagingEmitterMap
 }
