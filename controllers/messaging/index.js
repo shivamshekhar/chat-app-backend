@@ -37,7 +37,7 @@ class Messaging {
 
   static async poll(req, res, next) {
     const userName = req && req.params && req.params.user_name;
-    const sessionToken = req && req.headers && req.headers.session_token;
+    const sessionToken = req && req.headers && req.headers['session-token'];
 
     if(!UserService.checkUserExists(userName)) {
         let err = new Error("No such user exists");
