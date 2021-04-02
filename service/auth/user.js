@@ -1,32 +1,32 @@
 "use strict";
 
-const uuid = require('uuid');
-const crypto = require('crypto');
-const cryptUtils = require('../../lib').cryptUtils;
-const { userSessionMap, userMap } = require('../../config').user;
-const { userMessagingEmitterMap } = require('../../config').message;
-const EventEmitter = require('events');
+const uuid = require("uuid");
+const cryptUtils = require("../../lib").cryptUtils;
+const { userSessionMap } = require("../../config").user;
+const { userMessagingEmitterMap } = require("../../config").message;
+const userDbService = require("../db").user;
+const EventEmitter = require("events");
 
 class User {
-  static create(userName, password) {
+  static async create(userName, password) {
     const decryptedUserName = cryptUtils.decryptUserName(userName);
-    userMap[decryptedUserName] = {
-      name : decryptedUserName,
-      password : password
-    };
+    await userDbService.insertNameAndPassword(decryptedUserName, password);
     userMessagingEmitterMap[decryptedUserName] = new EventEmitter();
     return decryptedUserName;
   }
 
-  static isPasswordValid(userName, password) {
+  static async isPasswordValid(userName, password) {
     const decryptedUserName = cryptUtils.decryptUserName(userName);
-    const userDetails = userMap[decryptedUserName] || {};
-    return (password === userDetails.password);
+    const userData = await userDbService.fetchUserDetailsByName(decryptedUserName);
+    return (userData && password && password === userData.password);
   }
 
   static isUserLoggedIn(userName) {
     const decryptedUserName = cryptUtils.decryptUserName(userName);
-    return (userSessionMap[decryptedUserName] !== null && userSessionMap[decryptedUserName] !== undefined);
+    return (
+      userSessionMap[decryptedUserName] !== null &&
+      userSessionMap[decryptedUserName] !== undefined
+    );
   }
 
   static generateSessionToken(userName) {
@@ -38,7 +38,7 @@ class User {
 
   static isValidSession(userName, sessionToken) {
     const decryptedUserName = cryptUtils.decryptUserName(userName);
-    return (sessionToken === userSessionMap[decryptedUserName]);
+    return sessionToken === userSessionMap[decryptedUserName];
   }
 
   static clearSessionToken(userName) {
@@ -46,9 +46,17 @@ class User {
     userSessionMap[decryptedUserName] = undefined;
   }
 
-  static checkUserExists(userName) {
+  static async checkUserExists(userName) {
     const decryptedUserName = cryptUtils.decryptUserName(userName);
-    return (userMap[decryptedUserName] !== null && userMap[decryptedUserName] !== undefined);
+    const userData = await userDbService.fetchUserDetailsByName(
+      decryptedUserName
+    );
+
+    if (userData) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
 
