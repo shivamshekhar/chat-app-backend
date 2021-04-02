@@ -42,16 +42,3 @@ module.exports = {
     init : dbObj.init.bind(dbObj),
     user : userObj
 };
-
-(async function() {
-    if(require.main == module) {
-        try {
-            const db = require('../db');
-            await db.init();
-            console.log(await db.user.fetchUserDetailsByName('shekhar'));
-            process.exit(0);
-        } catch(err) {
-            process.exit(1);
-        }
-    }
-}())

@@ -2,7 +2,8 @@
 
 const express = require("express");
 const routes = require("./routes");
-const Db = require('./service').db;
+const logger = require("./lib").logger;
+const Db = require("./service").db;
 
 (async function () {
   if (require.main == module) {
@@ -13,10 +14,10 @@ const Db = require('./service').db;
       app.use(express.json());
       routes(app);
       app.listen(port, () => {
-        console.log(`Chat app listening at ${port}`);
+        logger.log(`Chat app listening at ${port}`);
       });
     } catch (err) {
-      console.log(err);
+      logger.log(`Error occurred while starting app. Error :`, err);
       process.exit(1);
     }
   }
