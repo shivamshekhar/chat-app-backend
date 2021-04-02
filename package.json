@@ -1,6 +1,6 @@
 {
   "name": "chat-app-backend",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A basic backend app for chat application",
   "main": "app.js",
   "scripts": {
@@ -11,6 +11,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "moment": "^2.29.1",
+    "mysql": "^2.18.1",
     "uuid": "^8.3.2"
   }
 }
