@@ -1,4 +1,5 @@
 # chat-app-backend
+##### Version 1.2.0  
 
 ## Description
 
@@ -6,7 +7,10 @@ Backend server code for a simple chat application. Written in Nodejs using Expre
 
 ## Prerequisites 
 
-Make sure Nodejs version >= 12 is installed (https://nodejs.org/) along with **npm** (node package manager)
+* Make sure Nodejs version >= 12 is installed (https://nodejs.org/) along with **npm** (node package manager)
+### Optional (Recommended)
+
+* Make sure mysql (https://www.mysql.com/) version 8 is installed on your local.
 
 ## Getting Started
 
@@ -20,9 +24,19 @@ git clone https://github.com/shivamshekhar/chat-app-backend && cd chat-app-backe
 npm install
 ```
 
+* Run Db migrations (Recommended but Optional)
+```bash
+sudo mysql -u root -p < ./scripts/mysql/db.sql
+```
+
 * Run app
 ```bash
 node app.js
+```
+
+If you want to run without connecting to a sql database
+```bash
+NO_DB=1 node app.js
 ```
 
 * Verify that app is running successfully by visiting following url in browser
@@ -41,16 +55,16 @@ If app is running successfully, you'll see following message
 
 ### Short Term
 
-* Implement a SQL database to persist data, instead of keeping them in in-memory maps.
 * Made a frontend web client for this server.
 * Implement more functionality like adding a friend/contact, etc.
-* Improve the auth and session token logic and make it more secure.
+* Improve the auth and session token logic and make it more secure. 
+* Improve long polling logic to make it work in cluster mode.
 
 ### Long Term
 
-* Deploy this code on an AWS instance.
 * Make an android client.
 * Reformat the code, and use Typescript instead of NodeJS.
+* Introduce clustering to run multiple processes.
 
 ## Author
 
