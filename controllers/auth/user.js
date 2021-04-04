@@ -51,13 +51,6 @@ class User {
         return next(err);
       }
 
-      if (UserService.isUserLoggedIn(userName)) {
-        return res.status(200).json({
-          message: "User is already logged in.",
-          sessionToken: UserService.generateSessionToken(userName),
-        });
-      }
-
       if (!(await UserService.checkUserExists(userName))) {
         let err = new Error(`User does not exist`);
         err.status = 400;
@@ -65,10 +58,17 @@ class User {
       }
 
       if (await UserService.isPasswordValid(userName, password)) {
-        return res.status(200).json({
-          message: `Successfully logged in`,
-          sessionToken: UserService.generateSessionToken(userName),
-        });
+        if (UserService.isUserLoggedIn(userName)) {
+          return res.status(200).json({
+            message: "User is already logged in.",
+            sessionToken: UserService.generateSessionToken(userName),
+          });
+        } else {
+          return res.status(200).json({
+            message: `Successfully logged in`,
+            sessionToken: UserService.generateSessionToken(userName),
+          });
+        }
       } else {
         let err = new Error(`Incorrect username / password for login`);
         err.status = 403;
