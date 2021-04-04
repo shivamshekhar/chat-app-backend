@@ -1,17 +1,23 @@
 "use strict";
 
 const express = require("express");
+const cors = require("cors");
 const routes = require("./routes");
 const logger = require("./lib").logger;
 const Db = require("./service").db;
+const corsOptions = {
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
+};
 
-(async function () {
+async function main() {
   if (require.main == module) {
     try {
       await Db.init();
       const app = express();
       const port = 3000;
       app.use(express.json());
+      app.use(cors(corsOptions));
       routes(app);
       app.listen(port, () => {
         logger.log(`Chat app listening at ${port}`);
@@ -21,4 +27,6 @@ const Db = require("./service").db;
       process.exit(1);
     }
   }
-})();
+}
+
+main();

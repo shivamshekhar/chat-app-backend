@@ -1,6 +1,6 @@
 {
   "name": "chat-app-backend",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "A basic backend app for chat application",
   "main": "app.js",
   "scripts": {
@@ -9,6 +9,7 @@
   "author": "Shivam Shekhar <shivamshekhar299@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "moment": "^2.29.1",
     "mysql": "^2.18.1",
