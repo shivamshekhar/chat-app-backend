@@ -3,5 +3,6 @@
 module.exports = {
     auth : require('./auth'),
     messaging: require('./messaging'),
-    db: require('./db')
+    db: require('./db'),
+    relation: require('./relation')
 };

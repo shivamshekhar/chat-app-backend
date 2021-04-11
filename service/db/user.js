@@ -1,9 +1,12 @@
 const TypeValidator = require("../../lib").dataUtils.typeValidator;
-const { userMap } = require("../../config").user;
 
 const tableDetails = Object.freeze({
   name: "user_details",
   columns: {
+    ID: {
+      name: "name",
+      type: "number",
+    },
     NAME: {
       name: "name",
       type: "string",
@@ -23,25 +26,10 @@ class User {
   insertNameAndPassword(name, password) {
     return new Promise((resolve, reject) => {
       try {
-        TypeValidator.validate(
-          name,
-          tableDetails.columns.NAME.type
-        );
-        TypeValidator.validate(
-          password,
-          tableDetails.columns.PASSWORD.type
-        );
+        TypeValidator.validate(name, tableDetails.columns.NAME.type);
+        TypeValidator.validate(password, tableDetails.columns.PASSWORD.type);
       } catch (err) {
         return reject(err);
-      }
-
-      if (process.env.NO_DB) {
-        userMap[name] = {
-          name,
-          password
-        };
-
-        return resolve();
       }
 
       if (!this.db.isConnected) {
@@ -49,7 +37,7 @@ class User {
       }
 
       this.db.connection.query(
-        `INSERT INTO user_details (${tableDetails.columns.NAME.name}, ${tableDetails.columns.PASSWORD.name}) VALUES ('${name}','${password}')`,
+        `INSERT INTO ${tableDetails.name} (${tableDetails.columns.NAME.name}, ${tableDetails.columns.PASSWORD.name}) VALUES ('${name}','${password}')`,
         (err) => {
           if (err) {
             return reject(err);
@@ -69,10 +57,6 @@ class User {
         return reject(err);
       }
 
-      if (process.env.NO_DB) {
-        return resolve(userMap[name]);
-      }
-
       if (!this.db.isConnected) {
         return reject(new Error(`Database is not connected`));
       }
@@ -84,7 +68,37 @@ class User {
             return reject(err);
           }
 
-          return resolve((results && results[0]));
+          return resolve(results && results[0]);
+        }
+      );
+    });
+  }
+
+  fetchManyUserDetailsById(id) {
+    return new Promise((resolve, reject) => {
+      if (!Array.isArray(id)) {
+        id = [id];
+      }
+      try {
+        for (let val of id) {
+          TypeValidator.validate(val, tableDetails.columns.ID.type);
+        }
+      } catch (err) {
+        return reject(err);
+      }
+
+      if (!this.db.isConnected) {
+        return reject(new Error(`Database is not connected`));
+      }
+
+      this.db.connection.query(
+        `SELECT * FROM user_details WHERE id in (${id.join(",")})`,
+        (err, results) => {
+          if (err) {
+            return reject(err);
+          }
+
+          return resolve(results);
         }
       );
     });

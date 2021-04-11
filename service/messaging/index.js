@@ -4,15 +4,15 @@ const {
 } = require("../../config").message;
 const cryptUtils = require("../../lib").cryptUtils;
 const EventEmitter = require("events");
+
 class Messaging {
   static send(message, friendName, userName) {
-    const decryptedUserName = cryptUtils.decryptUserName(userName);
-    const decryptedFriendName = cryptUtils.decryptUserName(friendName);
+    const decryptedFriendName = cryptUtils.decryptString(friendName);
     userMessagingQueueMap[decryptedFriendName] =
       userMessagingQueueMap[decryptedFriendName] || [];
     userMessagingQueueMap[decryptedFriendName].push({
       message,
-      sentFrom: decryptedUserName,
+      sentFrom: userName,
     });
 
     userMessagingEmitterMap[decryptedFriendName] =
@@ -36,7 +36,7 @@ class Messaging {
 
   static poll(userName) {
     return new Promise((resolve) => {
-      const decryptedUserName = cryptUtils.decryptUserName(userName);
+      const decryptedUserName = cryptUtils.decryptString(userName);
       userMessagingQueueMap[decryptedUserName] =
         userMessagingQueueMap[decryptedUserName] || [];
       userMessagingEmitterMap[decryptedUserName] =
@@ -61,7 +61,7 @@ class Messaging {
   }
 
   static clearListeners(userName) {
-    const decryptedUserName = cryptUtils.decryptUserName(userName);
+    const decryptedUserName = cryptUtils.decryptString(userName);
     userMessagingEmitterMap[decryptedUserName].removeAllListeners("recieved");
   }
 }
