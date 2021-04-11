@@ -10,11 +10,11 @@ class Relation {
         const relations = await relationDbService.getRelations(userId, relationType);
         const relatedUserIds = [];
         for(let r of relations) {
-            if(!relatedUserIds.includes(r.uid1)) {
+            if(!relatedUserIds.includes(r.uid1) && r.uid1 !== userId) {
                 relatedUserIds.push(r.uid1);
             }
 
-            if(!relatedUserIds.includes(r.uid2)) {
+            if(!relatedUserIds.includes(r.uid2) && r.uid2 !== userId) {
                 relatedUserIds.push(r.uid2);
             }
         }
