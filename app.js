@@ -6,7 +6,7 @@ const routes = require("./routes");
 const logger = require("./lib").logger;
 const Db = require("./service").db;
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "http://15.206.209.215", "https://15.206.209.215"],
   optionsSuccessStatus: 200,
 };
 
