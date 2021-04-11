@@ -22,6 +22,9 @@ class Relation {
 
         relatedUserDetails.forEach(r => {
             r.name = cryptUtils.encryptString(r.name);
+            r.password = undefined;
+            r.created_at = undefined;
+            r.updated_at = undefined;
         });
 
         return relatedUserDetails;
