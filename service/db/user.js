@@ -91,6 +91,10 @@ class User {
         return reject(new Error(`Database is not connected`));
       }
 
+      if(!id.length) {
+        return resolve([]);
+      }
+
       this.db.connection.query(
         `SELECT * FROM user_details WHERE id in (${id.join(",")})`,
         (err, results) => {
