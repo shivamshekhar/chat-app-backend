@@ -7,9 +7,9 @@ Backend server code for a simple chat application. Written in Nodejs using Expre
 
 ## Prerequisites 
 
-* Make sure Nodejs version >= 12 is installed (https://nodejs.org/) along with **npm** (node package manager)
+* Make sure [NodeJS v12.x](https://nodejs.org/) is installed along with [npm (node package manager)](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
-* Make sure mysql (https://www.mysql.com/) version 8 is installed on your local.
+* Make sure [mysql v8.x](https://www.mysql.com/) is installed on your local.
 
 ## Getting Started
 
@@ -20,7 +20,7 @@ git clone https://github.com/shivamshekhar/chat-app-backend && cd chat-app-backe
 
 * Install modules
 ```bash
-npm install
+npm i
 ```
 
 * Run Db migrations
@@ -49,10 +49,11 @@ If app is running successfully, you'll see following message
 
 ### Short Term
 
-* Made a frontend web client for this server.
-* Implement more functionality like adding a friend/contact, etc.
+* ~~Made a frontend web client for this server.~~
+* ~~Implement more functionality like adding a friend/contact, etc.~~
 * Improve the auth and session token logic and make it more secure. 
 * Improve long polling logic to make it work in cluster mode.
+* Implement websockets for p2p communication using Socket.IO
 
 ### Long Term
 
