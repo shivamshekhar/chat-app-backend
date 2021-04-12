@@ -36,7 +36,7 @@ node app.js
 
 * Verify that app is running successfully by visiting following url in browser
 ```bash
-http://localhost:3000/test
+http://localhost:4000/test
 ```
 
 If app is running successfully, you'll see following message
