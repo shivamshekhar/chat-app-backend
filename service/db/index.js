@@ -5,13 +5,7 @@ const logger = require("../../lib").logger;
 
 class Db {
   constructor() {
-    this.connection = mysql.createConnection({
-      host: "localhost",
-      user: "chatAdmin",
-      password: "password",
-      database: "chat_app",
-    });
-
+    this.connection = null;
     this.isConnected = false;
   }
 
@@ -32,6 +26,13 @@ class Db {
       if (this.isConnected) {
         return resolve();
       }
+
+      this.connection = mysql.createConnection({
+        host: "localhost",
+        user: "chatAdmin",
+        password: "password",
+        database: "chat_app",
+      });
 
       this.connection.connect((err) => {
         if (err) {
