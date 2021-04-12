@@ -3,7 +3,8 @@
 
 ## Description
 
-Backend server code for a simple chat application. Written in Nodejs using ExpressJS.
+Backend server code for a simple chat application. Written in Nodejs using ExpressJS.   
+(Please note, this is the **server** repo, for frontend client, visit : [chat-app-frontend](https://github.com/shivamshekhar/chat-app-frontend))
 
 ## Prerequisites 
 
