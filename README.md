@@ -1,9 +1,9 @@
 # chat-app-backend
-##### Version 2.0.0   
+##### Version 3.0.0   
 
 ## Description
 
-Backend server code for a simple chat application. Written in Nodejs using ExpressJS.   
+Backend server code for a simple chat application using HTTP long polling instead of Websockets. Written in Nodejs using ExpressJS.   
 (Please note, this is the **server** repo, for frontend client, visit : [chat-app-frontend](https://github.com/shivamshekhar/chat-app-frontend))
 
 ## Prerequisites 
@@ -19,6 +19,11 @@ Backend server code for a simple chat application. Written in Nodejs using Expre
 git clone https://github.com/shivamshekhar/chat-app-backend && cd chat-app-backend
 ```
 
+* Install Gulp CLI
+```bash
+sudo npm i -g gulp
+```
+
 * Install modules
 ```bash
 npm i
@@ -31,7 +36,7 @@ sudo mysql -u root -p < ./scripts/mysql/db.sql
 
 * Run app
 ```bash
-node app.js
+npm run start
 ```
 
 * Verify that app is running successfully by visiting following url in browser
@@ -54,12 +59,11 @@ If app is running successfully, you'll see following message
 * ~~Implement more functionality like adding a friend/contact, etc.~~
 * Improve the auth and session token logic and make it more secure. 
 * Improve long polling logic to make it work in cluster mode.
-* Implement websockets for p2p communication using Socket.IO
 
 ### Long Term
 
 * Make an android client.
-* Reformat the code, and use Typescript instead of NodeJS.
+* ~~Reformat the code, and use Typescript instead of NodeJS.~~
 * Introduce clustering to run multiple processes.
 
 ## Author
