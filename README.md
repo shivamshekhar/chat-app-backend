@@ -19,6 +19,11 @@ Backend server code for a simple chat application using HTTP long polling instea
 git clone https://github.com/shivamshekhar/chat-app-backend && cd chat-app-backend
 ```
 
+* Install Gulp CLI
+```bash
+sudo npm i -g gulp
+```
+
 * Install modules
 ```bash
 npm i
