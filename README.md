@@ -1,5 +1,5 @@
 # chat-app-backend
-##### Version 2.0.0   
+##### Version 3.0.0   
 
 ## Description
 
@@ -54,12 +54,11 @@ If app is running successfully, you'll see following message
 * ~~Implement more functionality like adding a friend/contact, etc.~~
 * Improve the auth and session token logic and make it more secure. 
 * Improve long polling logic to make it work in cluster mode.
-* Implement websockets for p2p communication using Socket.IO
 
 ### Long Term
 
 * Make an android client.
-* Reformat the code, and use Typescript instead of NodeJS.
+* ~~Reformat the code, and use Typescript instead of NodeJS.~~
 * Introduce clustering to run multiple processes.
 
 ## Author
