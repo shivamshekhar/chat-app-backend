@@ -3,7 +3,7 @@
 
 ## Description
 
-Backend server code for a simple chat application. Written in Nodejs using ExpressJS.   
+Backend server code for a simple chat application using HTTP long polling instead of Websockets. Written in Nodejs using ExpressJS.   
 (Please note, this is the **server** repo, for frontend client, visit : [chat-app-frontend](https://github.com/shivamshekhar/chat-app-frontend))
 
 ## Prerequisites 
@@ -31,7 +31,7 @@ sudo mysql -u root -p < ./scripts/mysql/db.sql
 
 * Run app
 ```bash
-node app.js
+npm run start
 ```
 
 * Verify that app is running successfully by visiting following url in browser
