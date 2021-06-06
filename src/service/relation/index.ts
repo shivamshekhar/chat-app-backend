@@ -1,6 +1,7 @@
 import { CryptUtils } from "../../lib/cryptUtils";
-const userDbService = require('../db').user;
-const relationDbService = require('../db').relation;
+import { db } from "../db";
+const userDbService = db.user;
+const relationDbService = db.relation;
 
 export class Relation {
     static async fetchRelations(userName: string, relationType: string): Promise<any[]> {
